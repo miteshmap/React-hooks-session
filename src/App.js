@@ -7,10 +7,13 @@ export default function App() {
   const inputRef = useRef();
 
   const saveTodoItem = () => {
-    const newTodos = todos;
-    newTodos.push(inputRef.current.value);
+    if (inputRef.current.value.trim().length === 0) {
+      return;
+    }
+    const items = [...todos];
+    items.push(inputRef.current.value.trim());
+    setTodos(items);
     inputRef.current.value = "";
-    setTodos(newTodos);
   };
 
   return (
@@ -27,9 +30,6 @@ export default function App() {
   );
 }
 
-const TodoList = props => {
-  console.log(props.items);
-  return props.items.length > 0 ? (
-    <pre>{JSON.stringify(props.items)}</pre>
-  ) : null;
+const TodoList = ({ items }) => {
+  return <pre>{JSON.stringify(items)}</pre>;
 };
