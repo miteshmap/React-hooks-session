@@ -1,5 +1,11 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, Suspense, lazy } from "react";
 import "./styles.css";
+
+const TodoList = lazy(() => {
+  return new Promise(resolve => {
+    setTimeout(() => resolve(import("./Todo")), 5000);
+  });
+});
 
 // Ref
 export default function App() {
@@ -24,12 +30,12 @@ export default function App() {
         <button onClick={() => saveTodoItem()}>Save</button>
       </div>
       <div className="totoList">
-        <TodoList items={todos} />
+        <Suspense fallback={<Loader />}>
+          <TodoList items={todos} />
+        </Suspense>
       </div>
     </>
   );
 }
 
-const TodoList = ({ items }) => {
-  return <pre>{JSON.stringify(items)}</pre>;
-};
+const Loader = () => <>Loading..</>;
